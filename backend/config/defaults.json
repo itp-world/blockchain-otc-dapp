@@ -1,0 +1,17 @@
+{
+  "server": {
+    "address": "127.0.0.1",
+    "port": 3000
+  },
+  "database": {
+    "url": "mongodb://localhost/otc-parity",
+    "debug": false,
+    "autoIndex": true
+  },
+  "logging": {
+    "level": "info"
+  },
+  "parity": {
+    "url": "ws://localhost:8546"
+  }
+}

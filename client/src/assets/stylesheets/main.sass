@@ -1,0 +1,59 @@
+@import variables
+@import mixins
+@import icons
+
+@include font-face('Roboto', 'roboto-v18-latin-regular')
+
+#app
+  background-image: url($imagePath + 'background.jpg')
+  background-position: center
+  background-repeat: no-repeat
+  background-size: cover
+
+.snack
+  white-space: pre-line
+
+.dialog
+  max-width: 420px
+
+.navigation-drawer .list__group__header__prepend-icon.primary--text
+  color: #fff !important
+
+.card .toolbar--card
+  transform: none !important
+
+.card__text p:last-child
+  margin-bottom: 0
+
+.chip .chip__content
+  height: auto
+  min-height: 32px
+  word-break: break-all
+  white-space: normal
+
+.toolbar__title a
+  color: $toolbar-title-color
+  text-decoration: none
+  outline: none
+
+.datatable .chip.its-you
+  margin: 0 -6px
+
+.datatable__expand-content .label
+  display: inline-block
+  min-width: 120px
+
+.input-field-action
+  text-align: right
+
+.nowrap
+  &, &.chip .chip__content
+    white-space: nowrap
+    word-break: keep-all
+
+.token-form .input-group
+  &:not(.input-group--error).input-group--disabled label
+    color: rgba(0,0,0,.54)
+  &.input-group--disabled
+    input, textarea
+      color: rgba(0,0,0,.87)
