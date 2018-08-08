@@ -1,0 +1,406 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  app: blockchain-app
+message: |-
+  The following service(s) have been created in your project: ${NAME}-client, ${NAME}-backend, ${NAME}-mongodb
+
+  For more information about using this template, see https://github.com/itp-world/blockchain-otc-dapp
+metadata:
+  annotations:
+    iconClass: icon-nodejs
+    openshift.io/display-name: Blockchain Demo
+    openshift.io/documentation-url: https://github.com/itp-world/blockchain-otc-dapp
+    openshift.io/long-description: This template deploys a blockchain demo on OpenShift using Parity
+    tags: quickstart,nodejs
+    template.openshift.io/bindable: "false"
+  name: blockchain-app-template
+objects:
+# DATABASE
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: ${NAME}-mongodb
+  stringData:
+    database-admin-password: ${DATABASE_ADMIN_PASSWORD}
+    database-password: ${DATABASE_PASSWORD}
+    database-user: ${DATABASE_USER}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${NAME}-mongodb
+  spec:
+    ports:
+    - name: mongodb
+      port: 27017
+      targetPort: 27017
+    selector:
+      name: ${NAME}-mongodb
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: ${NAME}-mongodb
+  spec:
+    replicas: 1
+    selector:
+      name: ${NAME}-mongodb
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: ${NAME}-mongodb
+        name: ${NAME}-mongodb
+      spec:
+        containers:
+        - env:
+          - name: MONGODB_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: ${NAME}-mongodb
+          - name: MONGODB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: ${NAME}-mongodb
+          - name: MONGODB_DATABASE
+            value: ${DATABASE_NAME}
+          - name: MONGODB_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-admin-password
+                name: ${NAME}-mongodb
+          image: ' '
+          livenessProbe:
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 27017
+            timeoutSeconds: 1
+          name: mongodb
+          ports:
+          - containerPort: 27017
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASSWORD
+                --eval="quit()"
+            initialDelaySeconds: 3
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          volumeMounts:
+          - mountPath: /var/lib/mongodb/data
+            name: ${NAME}-mongodb-data
+        volumes:
+        - emptyDir:
+            medium: ""
+          name: ${NAME}-mongodb-data
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - mongodb
+        from:
+          kind: ImageStreamTag
+          name: mongodb:3.4
+          namespace: openshift
+      type: ImageChange
+    - type: ConfigChange
+# CLIENT
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      service.alpha.openshift.io/dependencies: '[{"name": "${NAME}-backend", "kind": "Service"}]'
+    name: ${NAME}-client
+  spec:
+    ports:
+    - name: web
+      port: 8080
+      targetPort: 8080
+    selector:
+      name: ${NAME}-client
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${NAME}-client
+  spec:
+    to:
+      kind: Service
+      name: ${NAME}-client
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-client
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: ${NAME}-client
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${NAME}-client:latest
+    postCommit:
+      script: npm test
+    source:
+      contextDir: client
+      git:
+        ref: ${GIT_REF}
+        uri: ${GIT_URI}
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: NPM_MIRROR
+          value: ${NPM_MIRROR}
+        - name: DEV_MODE
+          value: false
+        from:
+          kind: ImageStreamTag
+          name: nodejs:8
+          namespace: openshift
+      type: Source
+    triggers:
+    - type: ImageChange
+    - type: ConfigChange
+    - github:
+        secret: ${WEBHOOK_SECRET}
+      type: GitHub
+    - generic:
+        secret: ${WEBHOOK_SECRET}
+      type: Generic
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: ${NAME}-client
+  spec:
+    replicas: 1
+    selector:
+      name: ${NAME}-client
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: ${NAME}-client
+        name: ${NAME}-client
+      spec:
+        containers:
+        - env:
+          - name: DEV_MODE
+            value: false
+          image: ' '
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+          name: client
+          ports:
+          - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: 512Mi
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - client
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}-client:latest
+      type: ImageChange
+    - type: ConfigChange
+# BACKEND
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      service.alpha.openshift.io/dependencies: '[{"name": "${NAME}-mongodb", "kind": "Service"}]'
+    name: ${NAME}-backend
+  spec:
+    ports:
+    - name: web
+      port: 8080
+      targetPort: 8080
+    selector:
+      name: ${NAME}-backend
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${NAME}-backend
+  spec:
+    to:
+      kind: Service
+      name: ${NAME}-backend
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-backend
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: ${NAME}-backend
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${NAME}-backend:latest
+    postCommit:
+      script: npm test
+    source:
+      git:
+        ref: ${GIT_REF}
+        uri: ${GIT_URI}
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: NPM_MIRROR
+          value: ${NPM_MIRROR}
+        - name: DEV_MODE
+          value: false
+        from:
+          kind: ImageStreamTag
+          name: nodejs:8
+          namespace: openshift
+      type: Source
+    triggers:
+    - type: ImageChange
+    - type: ConfigChange
+    - github:
+        secret: ${WEBHOOK_SECRET}
+      type: GitHub
+    - generic:
+        secret: ${WEBHOOK_SECRET}
+      type: Generic
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: ${NAME}-backend
+  spec:
+    replicas: 1
+    selector:
+      name: ${NAME}-backend
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: ${NAME}-backend
+        name: ${NAME}-backend
+      spec:
+        containers:
+        - env:
+          - name: DEV_MODE
+            value: false
+          - name: DATABASE_SERVICE_NAME
+            value: ${NAME}-mongodb
+          - name: MONGODB_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: ${NAME}-mongodb
+          - name: MONGODB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: ${NAME}-mongodb
+          - name: MONGODB_DATABASE
+            value: appdb
+          - name: MONGODB_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-admin-password
+                name: ${NAME}-mongodb
+          image: ' '
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+          name: backend
+          ports:
+          - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: 1Gi
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - backend
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}-backend:latest
+      type: ImageChange
+    - type: ConfigChange
+parameters:
+- description: The name assigned to all of the frontend objects defined in this template.
+  displayName: Name
+  name: NAME
+  required: true
+  value: blockchain-app
+- description: The URL of the repository with your application source code.
+  displayName: Git Repository URL
+  name: GIT_URI
+  required: true
+  value: https://github.com/itp-world/blockchain-otc-dapp.git
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: GIT_REF
+- description: Webhook trigger secret.  A difficult to guess string encoded as part
+    of the webhook URL.  Not encrypted.
+  displayName: Webhook Secret
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  name: WEBHOOK_SECRET
+- description: Username for MongoDB user that will be used for accessing the database.
+  displayName: MongoDB Username
+  from: user[A-Z0-9]{3}
+  generate: expression
+  name: DATABASE_USER
+- description: Password for the MongoDB user.
+  displayName: MongoDB Password
+  from: '[a-zA-Z0-9]{16}'
+  generate: expression
+  name: DATABASE_PASSWORD
+- description: Password for the database admin user.
+  displayName: Database Administrator Password
+  from: '[a-zA-Z0-9]{16}'
+  generate: expression
+  name: DATABASE_ADMIN_PASSWORD
+- description: The custom NPM mirror URL
+  displayName: Custom NPM Mirror URL
+  name: NPM_MIRROR
