@@ -126,29 +126,28 @@ objects:
   data:
     config.toml: |-
       [parity]
-      chain = "/opt/parity/conf/spec.json"
+      chain = "/opt/parity/conf/chain.json"
       base_path = "/opt/parity/data/parity0"
 
       [account]
-      password = ["/opt/parity/conf/node.pwd"]
+      password = ["/opt/parity/conf/node0.pwd"]
 
       [ui]
-      port = 8180
-      hosts = ["all"]
-
-      [network]
-      port = 30300
+      disable = true
 
       [rpc]
+      disable = false
       port = 8545
-      hosts = ["all"]
-      apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc", "parity_accounts"]
-      cors = "all"
+      interface = "local"
+      cors = []
+      hosts = ["none"]
 
       [websockets]
+      disable = false
       port = 8546
-      hosts = ["all"]
-      origins = ["all"]
+      interface = "local"
+      origins = ["none"]
+      hosts = ["none"]
 
       [ipc]
       disable = true
@@ -157,14 +156,14 @@ objects:
       engine_signer = "0x00bd138abd70e2f00903268f3db08f2d25677c9e"
       reseal_on_txs = "none"
       usd_per_tx = "0"
-    spec.json: |-
+    chain.json: |-
       {
-        "name": "MyPrivateChainDemo",
+        "name": "BlockchainDemo",
         "engine": {
           "authorityRound": {
             "params": {
               "stepDuration": "5",
-              "validators": { "list": [] }
+              "validators": { "list": [ "0x00bd138abd70e2f00903268f3db08f2d25677c9e" ] }
             }
           }
         },
@@ -203,8 +202,10 @@ objects:
           }
         }
       }
-    node.pwd: |-
+    node0.pwd: |-
       node0
+    signer-account: |-
+      {"id":"b2abab78-a4a8-02ee-c50f-f1e997b92ddd","version":3,"crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"e9e2d698b00b34d4e605b0af7d8be76c"},"ciphertext":"35f8cf73ac123fbb552f64dd5cfc0176661eabd65379d3ff9c9b121013268f99","kdf":"pbkdf2","kdfparams":{"c":10240,"dklen":32,"prf":"hmac-sha256","salt":"bc28777585c600f5d518f69cc88557e3c3042208ec7e7b3112ada7f4b41fd604"},"mac":"7eec0c3acae46dec3e9e8b8c068ba370c15c9f4297bad15d350786d642c7baa5"},"address":"00bd138abd70e2f00903268f3db08f2d25677c9e","name":"node0","meta":"{}"}
 parameters:
 - name: PARITY_VERSION
   displayName: Parity Image Tag
