@@ -212,21 +212,21 @@ objects:
           - name: DEV_MODE
             value: "false"
           image: ' '
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 30
-            timeoutSeconds: 3
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 8080
+          #   initialDelaySeconds: 30
+          #   timeoutSeconds: 3
           name: client
           ports:
           - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 3
-            timeoutSeconds: 3
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 8080
+          #   initialDelaySeconds: 3
+          #   timeoutSeconds: 3
           resources:
             limits:
               memory: 512Mi
