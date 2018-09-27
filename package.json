@@ -9,7 +9,7 @@
     "url": ""
   },
   "dependencies": {
-    "bcrypt": "2.0.0",
+    "bcrypt": "2.0.1",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "eth-lightwallet": "3.0.1",
@@ -49,7 +49,6 @@
     "start": "node backend/index",
     "setup": "node backend/setup",
     "lint": "./node_modules/gulp/bin/gulp.js lint",
-    "dev": "./node_modules/gulp/bin/gulp.js dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "./node_modules/gulp/bin/gulp.js dev"
   }
 }
