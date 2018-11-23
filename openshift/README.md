@@ -1,3 +1,10 @@
+Run it with Minishift and OC v3.10.0
+===
+
+```
+minishift start --openshift-version "v3.10.0"
+```
+
 OpenShift Templates
 ===
 
