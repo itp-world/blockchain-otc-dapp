@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev" : "npm run serve",
-    "start": "npm run serve",
+    "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js"
   },
