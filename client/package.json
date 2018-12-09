@@ -9,7 +9,7 @@
     "url": ""
   },
   "scripts": {
-    "dev" : "npm install -g http-server && http-server",
+    "dev" : "npm install -g http-server && npm build & http-server ./dist",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js"
