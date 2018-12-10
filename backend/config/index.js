@@ -24,6 +24,9 @@ if (!fs.existsSync(sessionSecretFile)) {
 var logDir = path.join(appRoot, 'tmp', 'logs')
 mkdirp.sync(logDir)
 
+// These default config values can be overwritten
+var defaults = JSON.parse(fs.readFileSync(path.join(__dirname, 'defaults.json')))
+
 // These config values cannot be overwritten
 var statics = JSON.parse(fs.readFileSync(path.join(__dirname, 'statics.json')))
 var overrides = {
@@ -33,11 +36,9 @@ var overrides = {
   walletFile: path.join(secretDir, 'wallet'),
   session: { secret: fs.readFileSync(sessionSecretFile, 'utf8') },
   logging: { dir: logDir },
-  basePath: `/api/v${statics.apiVersion}`
+  basePath: `/api/v${statics.apiVersion}`,
+  database: { url: (process.env.DATABASE_URL || defaults.database.url) }
 }
-
-// These default config values can be overwritten
-var defaults = JSON.parse(fs.readFileSync(path.join(__dirname, 'defaults.json')))
 
 // The order determines their priority in the hierarchy!
 // #1 any overrides
