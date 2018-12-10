@@ -211,6 +211,8 @@ objects:
         - env:
           - name: DEV_MODE
             value: "false"
+          - name: API_URL
+            value: "${NAME}-backend:3000/api/v1/"
           image: ' '
           # livenessProbe:
           #   httpGet:
