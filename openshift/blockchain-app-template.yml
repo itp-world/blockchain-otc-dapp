@@ -331,6 +331,8 @@ objects:
             value: "false"
           - name: DATABASE_SERVICE_NAME
             value: ${NAME}-mongodb
+          - name: DATABASE_URL
+            value: mongodb://${NAME}-mongodb/otc-parity
           - name: MONGODB_USER
             valueFrom:
               secretKeyRef:
@@ -342,7 +344,7 @@ objects:
                 key: database-password
                 name: ${NAME}-mongodb
           - name: MONGODB_DATABASE
-            value: appdb
+            value: otc-parity
           - name: MONGODB_ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
