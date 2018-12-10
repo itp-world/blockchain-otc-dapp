@@ -9,11 +9,10 @@
     "url": ""
   },
   "dependencies": {
-    "bcrypt": "^3.0.1",
-    "bitcore-lib": "^0.16.0",
+    "bcrypt": "2.0.1",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
-    "eth-lightwallet": "3.0.1",
+    "eth-lightwallet": "https://github.com/dividezero/eth-lightwallet/tarball/4c73b5aff88881d1ca20174ff307d53e4ff1488b",
     "express": "4.16.3",
     "express-winston": "2.5.1",
     "jsonwebtoken": "8.2.1",
@@ -24,7 +23,7 @@
     "passport": "0.4.0",
     "passport-jwt": "4.0.0",
     "solc": "0.4.21",
-    "web3": "^1.0.0-beta2",
+    "web3": "1.0.0-beta.33",
     "winston": "2.4.1"
   },
   "devDependencies": {
@@ -34,7 +33,7 @@
     "eslint-plugin-node": "6.0.1",
     "eslint-plugin-promise": "3.7.0",
     "eslint-plugin-standard": "3.0.1",
-    "gulp": "^4.0.0",
+    "gulp": "3.9.1",
     "gulp-eslint": "4.0.2",
     "gulp-help": "1.6.1",
     "gulp-jslint": "1.0.10",
