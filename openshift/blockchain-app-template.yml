@@ -351,7 +351,7 @@ objects:
                 key: database-admin-password
                 name: ${NAME}-mongodb
           - name: PARITY_URL
-            value: parity
+            value: ws://parity:8546
           image: ' '
           livenessProbe:
             httpGet:
