@@ -37,7 +37,8 @@ var overrides = {
   session: { secret: fs.readFileSync(sessionSecretFile, 'utf8') },
   logging: { dir: logDir },
   basePath: `/api/v${statics.apiVersion}`,
-  database: { url: (process.env.DATABASE_URL || defaults.database.url) }
+  database: { url: (process.env.DATABASE_URL || defaults.database.url) },
+  parity: { url: (process.env.PARITY_URL || defaults.parity.url) }
 }
 
 // The order determines their priority in the hierarchy!
