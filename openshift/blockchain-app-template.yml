@@ -332,7 +332,7 @@ objects:
           - name: DATABASE_SERVICE_NAME
             value: ${NAME}-mongodb
           - name: DATABASE_URL
-            value: mongodb://${NAME}-mongodb/otc-parity
+            value: mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${NAME}-mongodb/otc-parity
           - name: MONGODB_USER
             valueFrom:
               secretKeyRef:
