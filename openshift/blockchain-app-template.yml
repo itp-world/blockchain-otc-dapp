@@ -175,6 +175,8 @@ objects:
           value: ${NPM_MIRROR}
         - name: DEV_MODE
           value: "false"
+        - name: API_URL
+          value: ${NAME}-backend:3000/api/v1/
         from:
           kind: ImageStreamTag
           name: nodejs:8
