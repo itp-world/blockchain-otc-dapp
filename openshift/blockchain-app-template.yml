@@ -346,7 +346,7 @@ objects:
           - name: DATABASE_URL
             value: mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${NAME}-mongodb/${MONGODB_DATABASE}
           - name: DATABASE_DEBUG
-            value: true
+            value: "true"
           - name: MONGODB_ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
