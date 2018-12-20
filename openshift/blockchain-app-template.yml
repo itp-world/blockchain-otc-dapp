@@ -176,7 +176,7 @@ objects:
         - name: DEV_MODE
           value: "false"
         - name: API_URL
-          value: ${NAME}-backend:3000/api/v1/
+          value: ${API_URL}
         from:
           kind: ImageStreamTag
           name: nodejs:8
@@ -214,7 +214,7 @@ objects:
           - name: DEV_MODE
             value: "false"
           - name: API_URL
-            value: ${NAME}-backend:3000/api/v1/
+            value: ${API_URL}
           image: ' '
           # livenessProbe:
           #   httpGet:
@@ -424,3 +424,6 @@ parameters:
 - description: The custom NPM mirror URL
   displayName: Custom NPM Mirror URL
   name: NPM_MIRROR
+- description: The API URL of the backend.
+  displayName: API url
+  name: API_URL
