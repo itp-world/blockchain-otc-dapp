@@ -59,25 +59,24 @@ objects:
             protocol: TCP
           - containerPort: 30303
             protocol: UDP
-          command: ["/parity/parity"]
+          command: ["/bin/sh"]
           args:
-          - --config
-          - /opt/parity/conf/config.toml
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
+          - -c
+          - "umask 0002; /parity/parity --config /opt/parity/conf/config.toml"
           volumeMounts:
           - name: parity-config
             mountPath: /opt/parity/conf
           - name: parity-data
             mountPath: /opt/parity/data
           - name: parity-signer-key-config
-            mountPath: /opt/parity/data/parity0/keys/BlockchainDemo
+            mountPath: /opt/parity/data/keys/BlockchainDemo
         volumes:
         - name: parity-config
           configMap:
             name: parity
         - name: parity-data
           persistentVolumeClaim:
+            defaultMode: 504
             claimName: parity-data
         - name: parity-signer-key-config
           configMap:
@@ -132,7 +131,7 @@ objects:
     config.toml: |-
       [parity]
       chain = "/opt/parity/conf/chain.json"
-      base_path = "/opt/parity/data/parity0"
+      base_path = "/opt/parity/data"
 
       [account]
       password = ["/opt/parity/conf/node0.pwd"]
@@ -143,14 +142,14 @@ objects:
       [rpc]
       disable = false
       port = 8545
-      interface = "local"
+      interface = "all"
       cors = []
       hosts = ["none"]
 
       [websockets]
       disable = false
       port = 8546
-      interface = "local"
+      interface = "all"
       origins = ["none"]
       hosts = ["none"]
 
