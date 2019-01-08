@@ -37,6 +37,10 @@ var overrides = {
   session: { secret: fs.readFileSync(sessionSecretFile, 'utf8') },
   logging: { dir: logDir },
   basePath: `/api/v${statics.apiVersion}`,
+  server: {
+    address: (process.env.SERVER_URL || defaults.server.address),
+    port: (process.env.SERVER_PORT || defaults.server.port)
+  },
   database: {
     url: (process.env.DATABASE_URL || defaults.database.url),
     debug: (process.env.DATABASE_DEBUG || defaults.database.debug)
