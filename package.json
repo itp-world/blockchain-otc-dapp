@@ -46,7 +46,7 @@
   },
   "main": "backend/index.js",
   "scripts": {
-    "start": "node backend/index",
+    "start": "node backend/setup && node backend/index",
     "setup": "node backend/setup",
     "lint": "./node_modules/gulp/bin/gulp.js lint",
     "dev": "./node_modules/gulp/bin/gulp.js dev"

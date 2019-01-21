@@ -357,21 +357,21 @@ objects:
           - name: PARITY_URL
             value: ws://parity:8546
           image: ' '
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 30
-            timeoutSeconds: 3
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: 3000
+          #   initialDelaySeconds: 30
+          #   timeoutSeconds: 3
           name: backend
           ports:
           - containerPort: 3000
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 3
-            timeoutSeconds: 3
+          # readinessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: 3000
+          #   initialDelaySeconds: 3
+          #   timeoutSeconds: 3
           resources:
             limits:
               memory: 1Gi
