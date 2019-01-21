@@ -5,8 +5,12 @@ var RPC = require('./rpc')
 var utils = require('./utils')
 var contracts = require('./contracts')()
 var wallet = require('./wallet')()
+var logger = require('../logger')
 
 function tokenDataByName (tokenName) {
+  if (contracts === undefined) {
+    logger.error(`contract definitions not properly loaded`, { category: 'run' })
+  }
   var contract = utils.getContract(contracts.token[tokenName])
 
   return contract.methods.name().call().then((name) => {
