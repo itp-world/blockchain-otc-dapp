@@ -14,7 +14,7 @@ module.exports = () => {
   }
 
   if (!fs.existsSync(contractsFile)) {
-    logger.error(`contracts file ${contractsFile} cannot be read`, { category: 'setup' })
+    logger.warn(`contracts file ${contractsFile} not yet written`, { category: 'setup' })
     return contracts
   }
 
