@@ -99,6 +99,7 @@ objects:
     ports:
     - name: web
       port: 80
+      protocol: TCP
       targetPort: 8180
     - name: 8180-tcp
       port: 8180
@@ -149,6 +150,7 @@ objects:
 
       [ui]
       disable = false
+      interface = "all"
 
       [rpc]
       disable = false
