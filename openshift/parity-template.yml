@@ -97,6 +97,9 @@ objects:
     name: parity
   spec:
     ports:
+    - name: web
+      port: 80
+      targetPort: 8180
     - name: 8180-tcp
       port: 8180
       protocol: TCP
@@ -113,6 +116,14 @@ objects:
       deploymentconfig: parity
       app: parity
     type: ClusterIP
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: parity-ui
+  spec:
+    to:
+      kind: Service
+      name: parity
 - kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
