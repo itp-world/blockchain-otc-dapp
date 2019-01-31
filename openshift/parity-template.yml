@@ -137,7 +137,7 @@ objects:
       password = ["/opt/parity/conf/node0.pwd"]
 
       [ui]
-      disable = true
+      disable = false
 
       [rpc]
       disable = false
