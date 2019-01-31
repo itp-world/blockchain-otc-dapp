@@ -97,10 +97,6 @@ objects:
     name: parity
   spec:
     ports:
-    - name: web
-      port: 80
-      protocol: TCP
-      targetPort: 8180
     - name: 8180-tcp
       port: 8180
       protocol: TCP
@@ -122,6 +118,8 @@ objects:
   metadata:
     name: parity-ui
   spec:
+    port:
+      targetPort: 8180-tcp
     to:
       kind: Service
       name: parity
