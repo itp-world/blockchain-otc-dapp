@@ -400,6 +400,7 @@ parameters:
     are not using the default branch.
   displayName: Git Reference
   name: GIT_REF
+  value: parity-version
 - description: Webhook trigger secret.  A difficult to guess string encoded as part
     of the webhook URL.  Not encrypted.
   displayName: Webhook Secret

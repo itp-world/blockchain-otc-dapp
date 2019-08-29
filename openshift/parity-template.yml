@@ -62,7 +62,7 @@ objects:
           command: ["/bin/sh"]
           args:
           - -c
-          - "umask 0002; /parity/parity --config /opt/parity/conf/config.toml"
+          - "umask 0002; /bin/parity --config /opt/parity/conf/config.toml"
           volumeMounts:
           - name: parity-config
             mountPath: /opt/parity/conf
@@ -230,5 +230,5 @@ parameters:
 - name: PARITY_VERSION
   displayName: Parity Image Tag
   description: 'Version of the Parity container image. Check the available version https://hub.docker.com/r/parity/parity/tags/'
-  value: "v2.0.1"
+  value: "stable"
   required: true
