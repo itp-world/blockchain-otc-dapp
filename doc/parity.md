@@ -7,7 +7,7 @@ Don't use this configuration in a production environment!**
 
 ## Setup
 
-Download and install [Parity](https://github.com/paritytech/parity/releases/tag/v1.9.6) 1.9.6-stable binary.
+Download and install [Parity](https://github.com/paritytech/parity/releases/tag/v2.5.7) 2.5.7-stable binary.
 
 ## Configuration Files
 
@@ -63,7 +63,7 @@ Download and install [Parity](https://github.com/paritytech/parity/releases/tag/
 
 ### Parity Node Configuration File `./node0.toml`
 
-See [Configuring Parity](https://wiki.parity.io/Configuring-Parity#default-configtoml)
+See [Configuring Parity](https://wiki.parity.io/Configuring-Parity-Ethereum)
 for the default configuration and further information.
 
 If the [backend](../README.md) is not executed on the same system as the parity node
