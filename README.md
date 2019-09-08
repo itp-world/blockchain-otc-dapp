@@ -6,7 +6,7 @@
 
 * [Node.js](https://nodejs.org) >= 8.*
 * [MongoDB](https://www.mongodb.com) >= 3.4
-* [Parity](https://github.com/paritytech/parity/releases/tag/v1.9.6) 1.9.6-stable
+* [Parity](https://github.com/paritytech/parity-ethereum/releases) latest stable
 
 The following node packages or their dependencies uses native libraries:
 * [bcrypt](https://github.com/kelektiv/node.bcrypt.js)
@@ -20,7 +20,7 @@ Please take care for the dependencies of the build tool [node-gyp](https://githu
 
 #### Parity
 
-See [Configuring Parity](https://wiki.parity.io/Configuring-Parity) for the complete documentation.
+See [Configuring Parity](https://wiki.parity.io/Configuring-Parity-Ethereum) for the complete documentation.
 
 #### Backend
 
