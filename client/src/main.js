@@ -15,7 +15,7 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = process.env.API_URL
-axios.defaults.timeout = 60000
+axios.defaults.timeout = 600000
 
 axios.interceptors.request.use((request) => {
   request.headers.Authorization = `Bearer ${Vue.auth.getToken()}`
