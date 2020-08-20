@@ -9,7 +9,7 @@
     "url": ""
   },
   "dependencies": {
-    "bcrypt": "2.0.1",
+    "bcrypt": "5.0.0",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "eth-lightwallet": "https://github.com/dividezero/eth-lightwallet/tarball/4c73b5aff88881d1ca20174ff307d53e4ff1488b",
