@@ -15,7 +15,7 @@
     "eth-lightwallet": "https://github.com/dividezero/eth-lightwallet/tarball/4c73b5aff88881d1ca20174ff307d53e4ff1488b",
     "express": "4.16.3",
     "express-winston": "2.5.1",
-    "jsonwebtoken": "8.2.1",
+    "jsonwebtoken": "9.0.0",
     "mkdirp": "0.5.1",
     "mongoose": "5.0.15",
     "mongoose-beautiful-unique-validation": "7.1.1",
